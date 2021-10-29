@@ -3,80 +3,181 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
   </head>
   <body>
 
-    <!-- HEADER -->
+  <!-- ///////////////////////////////////////          HEADER           ////////////////////////////////////////////////// -->
 
-    <div class="header">
-      <div class="title_logo">
-        <a  href="https://hodlinfo.com"><img class="logo" src="Resources/tag.png"/></a>
-          <p class="header_p" style="margin-top:-10px">Powered By<a href="https://finstreet.com"> Finstreet</a></p>
+    <div class="header container" style="padding-top:50px;">
+      <div class="row">
+
+      <!-- /////////////////        TITLE LOGO      ///////////////////// -->
+
+        <div class="title_logo col-sm">
+          <a  href="https://hodlinfo.com"><img class="logo" src="Resources/tag.png"/></a>
+            <p class="header_p" style="margin-top:-10px">Powered By<a href="https://finstreet.com"> Finstreet</a></p>
+        </div>
+
+      <!-- //////////////////      DROPDOWN BUTTON     //////////////////// -->
+
+        <div class="col-sm">
+          <div class="row">
+
+            <div class="dropdown col-sm">
+              <a style="background-color:#2e3241;" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                INR
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="#">INR</a>
+              </div>
+            </div>
+
+            <div class="dropdown col-sm">
+              <a style="background-color:#2e3241;" class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                BTC
+              </a>
+
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a class="dropdown-item" href="#">BTC</a>
+                <a class="dropdown-item" href="#">XRP</a>
+                <a class="dropdown-item" href="#">ETH</a>
+              </div>
+            </div>
+
+            <div class="dropdown col-sm">
+              <a style="background-color:#2e3241; color:white" class="btn btn-light" href="#" role="button">BUY BTC</a>
+            </div>
+
+          </div>
+
+        </div>
+
+      <!-- /////////////////        LEFT NAVBAR      ///////////////////// -->
+
+
+        <div class = 'col-sm'>
+          <div class="row">
+            <div class="col-sm"  style="text-align:center;">
+              <p id="timer" style="font-size: 30px;border-radius:50%;">60</p>
+            </div>
+            <div class="col-sm"  style="text-align:center;">
+              <a style="background-color:#3dc6c1" class="btn btn-primary" href="https://hodlinfo.com/connect/telegram" role="button">Connet Telegram</a>
+            </div>
+          </div>
+        </div>
       </div>
+
 
     </div>
 
-    <div class="mid">
-      <a href="https://finstreet.com"><img class="banner1" src="Resources/banner1.png" alt=""></a>
+
+<!-- /////////////////////////////////////////////////          MID            ///////////////////////////////////////////////////////// -->
+
+
+      <div class="mid">
+      <a href="https://www.finstreet.in" target="_blank" rel="noopener noreferrer"><img class="banner1" src="Resources/banner1.png" alt=""></a>
     </div>
 
     <div class="table">
       <table>
         <thead>
           <tr>
-            <th>#</th> <th>name</th> <th>last</th> <th>buy/sell</th ><th>volume</th> <th>base_unit</th>
+            <th>#</th> <th>Platform</th> <th>last</th> <th>buy/sell</th ><th>difference</th> <th>savings</th>
           </tr>
         </thead>
 
-        <tbody>
-          <tr>
-            <td class="ftd">1</td> <td><%=arr[0].name%></td> <td>₹<%=arr[0].last%></td> <td>₹<%=arr[0].buy%>/₹<%=arr[0].sell%></td ><td><%=arr[0].volume%></td> <td class="ltd"><%=arr[0].base_unit%></td>
-          </tr>
+        <tbody id="tbody">
+          <% const formatter = new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', minimumFractionDigits: 2 }); %>
+           <% for (var i = coins.length-1; i >= 0 ; i--) { %>
+            <tr>
+              <td class="ftd"><%= 5-i %></td>
+              <td><%= coins[i].name %></td>
+              <td><%= formatter.format(coins[i].last) %></td>
+              <td><%= formatter.format(coins[i].buy) %>/<%= formatter.format(coins[i].sell) %></td>
+              <% if(coins[i].last-avg < 0) { %>
+              <td style="color: #da5757;"><%= (((coins[i].last-avg)/avg)*100).toFixed(2) %></td>
+              <td class = "ltd" style="color: #da5757;"><%= (coins[i].last-avg).toFixed(2) %></td>
+              <% } else { %>
+              <td style="color: #5dc7c2;"><%= (((coins[i].last-avg)/avg)*100).toFixed(2) %></td>
+              <td class = "ltd" style="color: #5dc7c2;"><%= (coins[i].last-avg).toFixed(2) %></td>
+              <% } %>
 
-          <tr>
-            <td class="ftd">2</td> <td><%=arr[1].name%></td> <td>₹<%=arr[1].last%></td> <td>₹<%=arr[1].buy%>/₹<%=arr[1].sell%></td ><td><%=arr[1].volume%></td> <td class="ltd"><%=arr[1].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">3</td> <td><%=arr[2].name%></td> <td>₹<%=arr[2].last%></td> <td>₹<%=arr[2].buy%>/₹<%=arr[2].sell%></td ><td><%=arr[2].volume%></td> <td class="ltd"><%=arr[2].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">4</td> <td><%=arr[3].name%></td> <td>₹<%=arr[3].last%></td> <td>₹<%=arr[3].buy%>/₹<%=arr[3].sell%></td ><td><%=arr[3].volume%></td> <td class="ltd"><%=arr[3].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">5</td> <td><%=arr[4].name%></td> <td>₹<%=arr[4].last%></td> <td>₹<%=arr[4].buy%>/₹<%=arr[4].sell%></td ><td><%=arr[4].volume%></td> <td class="ltd"><%=arr[4].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">6</td> <td><%=arr[5].name%></td> <td>₹<%=arr[5].last%></td> <td>₹<%=arr[5].buy%>/₹<%=arr[5].sell%></td ><td><%=arr[5].volume%></td> <td><%=arr[5].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">7</td> <td><%=arr[6].name%></td> <td>₹<%=arr[6].last%></td> <td>₹<%=arr[6].buy%>/₹<%=arr[6].sell%></td ><td><%=arr[6].volume%></td> <td><%=arr[6].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">8</td> <td><%=arr[7].name%></td> <td>₹<%=arr[7].last%></td> <td>₹<%=arr[7].buy%>/₹<%=arr[7].sell%></td ><td><%=arr[7].volume%></td> <td class="ltd"><%=arr[7].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">9</td> <td><%=arr[8].name%></td> <td>₹<%=arr[8].last%></td> <td>₹<%=arr[8].buy%>/₹<%=arr[8].sell%></td ><td><%=arr[8].volume%></td> <td class="ltd"><%=arr[8].base_unit%></td>
-          </tr>
-
-          <tr>
-            <td class="ftd">10</td> <td><%=arr[9].name%></td> <td>₹<%=arr[9].last%></td> <td>₹<%=arr[9].buy%>/₹<%=arr[9].sell%></td ><td><%=arr[9].volume%></td> <td class="ltd"><%=arr[9].base_unit%></td>
-          </tr>
+            </tr>
+           <% } %>
         </tbody>
 
       </table>
+
+<!-- //////////////////////////////////////////////      FOOTER       ///////////////////////////////////////////// -->
+
+
     </div>
-      <a href="https://www.algorand.com/futurefi/"><img class="banner2" src="Resources/banner2.jpg"></a>
+      <a href="https://www.algorand.com/futurefi/" target="_blank" rel="noopener noreferrer"><img class="banner2" src="Resources/banner2.jpg"></a>
     <div class="footer">
       <hr>
     </div>
+
+<!-- //////////////////////////////////////////////     SCRIPT       /////////////////////////////////////////////////////////////// -->
+
+
+    <script>
+      window.onload = function () {
+          var sec = 60;
+          setInterval(async function () {
+          document.getElementById("timer").innerHTML = sec;
+          sec--;
+          if (sec === 0) {
+              fetch('/refresh')
+              .then(response => response.json())
+              .then(data => {
+                let str="";
+                const formatter = new Intl.NumberFormat('en-IN', {
+                  style: 'currency',
+                  currency: 'INR',
+                  minimumFractionDigits: 2
+                })
+                for (var i = data.coins.length-1; i >=0; i--) {
+                  let last = formatter.format(data.coins[i].last);
+                  let buy = formatter.format(data.coins[i].buy);
+                  let sell =  formatter.format(data.coins[i].sell);
+                  let diff = (((data.coins[i].last-data.avg)/data.avg)*100).toFixed(2);
+                  let savings = (data.coins[i].last-data.avg).toFixed(2);
+                  str += `
+                 <tr>
+                   <td class="ftd"> ${5-i} </td>
+                   <td> ${data.coins[i].name} </td>
+                   <td> ${last} </td>
+                   <td> ${buy} / ${sell} </td> `;
+
+                  if (diff<0) {
+
+                    str+=   `<td style='color: #da5757;'> ${diff} </td>
+                       <td class = "ltd" style='color: #da5757;'> ${savings} </td>
+                     </tr> `;
+                  }
+                  else{
+                    str += `
+                     <td style='color: #5dc7c2;'> ${diff} </td>
+                     <td class = "ltd" style='color: #5dc7c2;'> ${savings} </td>
+                   </tr> `;
+                  }
+                }
+                document.getElementById("tbody").innerHTML = str;
+
+              });
+              sec = 60;
+            }
+          }, 1000);
+      }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+
   </body>
 </html>
